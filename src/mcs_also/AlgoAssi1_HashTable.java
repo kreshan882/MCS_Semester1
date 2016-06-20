@@ -52,7 +52,7 @@ import java.util.Hashtable;
 	private static int[] readInitFile() throws Exception{
 		    BufferedReader br = null;
 	        String sCurrentLine; 
-	        br = new BufferedReader(new FileReader("C:\\Users\\kreshan\\Desktop\\HashInt.txt"));
+	        br = new BufferedReader(new FileReader("C:\\Users\\kreshan88\\Desktop\\HashInt.txt"));
 	        int inputf[] = new int[TABLE_SIZE];
 	        int i = 0;
 	        while ((sCurrentLine = br.readLine()) != null) {
