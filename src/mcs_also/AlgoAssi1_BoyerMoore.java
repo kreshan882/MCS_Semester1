@@ -1,6 +1,8 @@
 
 package mcs_also;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.Arrays;  
 import java.util.HashMap;  
 import java.util.List;  
@@ -10,23 +12,39 @@ import java.util.Map;
 public class AlgoAssi1_BoyerMoore {
 
     public static void main(String[] args) {  
+        try{
     	String txt="ACGTCGTGACTAAGAGTGCAGACTGAGGTGACCGTAGACTAAGTCAGTAGACTCAG";
     	String patten="GACT_AG";
-    	
+        
+//        System.out.println("Enter The Text:");
+//    	BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+//	String txt = bufferRead.readLine();
+//        System.out.println("Enter The Patten:");
+//        BufferedReader bufferRead2 = new BufferedReader(new InputStreamReader(System.in));
+//	String patten = bufferRead2.readLine();
+        
     	String lett[]={"A","C","G","T"};
-    	
+    	int total=0;
+        List<Integer> matches=new ArrayList<Integer>();
     	for(int k=0;k<lett.length;k++){
     		String pat="";
     		pat=patten.replace("_", lett[k]);
-    		List<Integer> matches = match(pat, txt);  
-    		System.out.println(lett[k]+":" + matches.size());
-          //  for (Integer integer : matches) System.out.println(lett[k]+":" + integer);  
+                int val=match(pat, txt);
+    		matches.add(val);  
+                total+=val; 
     	}
-         
+        
+        System.out.println(total);
+        for(int i=0;i<matches.size();i++){
+            System.out.println(matches.get(i));
+        } 
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }  
     
 	
-    public static List<Integer> match(String pattern, String text) {  
+    public static int match(String pattern, String text) {  
         List<Integer> matches = new ArrayList<Integer>();  
         int m = text.length();  
         int n = pattern.length();  
@@ -57,14 +75,13 @@ public class AlgoAssi1_BoyerMoore {
 	                }  
             }  
         }  
-        return matches;  
+        return matches.size();  
     }  
     private static Map<Character, Integer> preprocessForBadCharacterShift( String pattern) {   //ana 
         Map<Character, Integer> map = new HashMap<Character, Integer>();  
         for (int i = pattern.length() - 1; i >= 0; i--) {  
             char c = pattern.charAt(i);  
             if (!map.containsKey(c)){
-            	//System.out.println(c+":"+i);
             	map.put(c, i);  
             }
         }  
