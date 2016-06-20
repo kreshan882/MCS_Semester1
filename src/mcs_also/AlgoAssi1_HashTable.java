@@ -5,7 +5,7 @@ import java.util.Hashtable;
 
 
 	public class AlgoAssi1_HashTable {
-	public static final int TABLE_SIZE=100000;
+	public static final int TABLE_SIZE=1000000;//direct address table 10^6
 	public static  int TARGET_SUM[]={231552, 234756, 596873, 648219, 726312, 981237, 988331, 1277361, 1283379};
 	
 	public static void main(String[] args) {
