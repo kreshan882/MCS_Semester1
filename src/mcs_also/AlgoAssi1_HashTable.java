@@ -1,3 +1,4 @@
+package mcs_also;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.Hashtable;
@@ -11,6 +12,7 @@ import java.util.Hashtable;
 		String output[]=new String[9];
 		 try{
 			 
+                     
 			   int input[] = AlgoAssi1_HashTable.readInitFile();
 			 
 			   System.out.println("Insert into hash table.....");
