@@ -32,7 +32,7 @@ import java.util.Hashtable;
 			   }
 			   
 			   for (String op : output){
-				   System.out.print(op+" ");
+				   System.out.print(op);
 			   }
 			        
 		 }catch(Exception e){
@@ -50,16 +50,15 @@ import java.util.Hashtable;
 	}
 
 	private static int[] readInitFile() throws Exception{
-		    BufferedReader br = null;
+		BufferedReader br = null;
 	        String sCurrentLine; 
 	        br = new BufferedReader(new FileReader("C:\\Users\\kreshan88\\Desktop\\HashInt.txt"));
 	        int inputf[] = new int[TABLE_SIZE];
 	        int i = 0;
 	        while ((sCurrentLine = br.readLine()) != null) {
-
 	            inputf[i++] = Integer.parseInt(sCurrentLine);
 	        }
 	        return inputf;
-		
 	}
-	}
+	
+ }
