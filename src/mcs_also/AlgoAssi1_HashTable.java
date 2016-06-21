@@ -24,7 +24,7 @@ import java.util.Hashtable;
 				   for(int q=0;q<input.length;q++){
 					   int value=TARGET_SUM[p]-input[q];
 					   if(hashtable.containsKey(value)){
-						   System.out.println(value+"+"+input[q]+"="+TARGET_SUM[p]);
+//						   System.out.println(value+"+"+input[q]+"="+TARGET_SUM[p]);
 						   output[p]="1";
 						   break;
 					   }  
