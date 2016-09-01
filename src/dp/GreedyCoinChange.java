@@ -6,47 +6,44 @@
 
 package dp;
 
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 /**
  *
  * @author Kreshan
  */
 public class GreedyCoinChange {
-    private static int[] coinArray = new int[]{100, 50, 10, 5, 2, 1};
+    private static int[] coinSets = new int[]{100, 50, 25, 10, 5, 2, 1};
 
     public static void main(String[] args) {
-        if (args.length != 1) {
-            System.err.println("Please give the amount as an argument");
-            return;
-        }
         try {
-            int amount = Integer.parseInt(args[0]);
-            Map<Integer, Integer> coinSelectionMap = getCoins(amount);
-            System.out.println("CoinSelection = " +  coinSelectionMap);
-        } catch (NumberFormatException e) {
-            System.err.println("Please specify amount as an integer");
+            //get input value
+            Scanner reader = new Scanner(System.in); 
+            System.out.print("Please give total amount :");
+            int amount = reader.nextInt();
+        
+            Map<Integer, Integer> coinSelectMap = new HashMap<Integer, Integer>();
+
+            for (int i=0;i<coinSets.length;i++) {
+                int numberOfCoins = amount / coinSets[i];
+                if (numberOfCoins == 0) continue;
+                
+                amount = amount % coinSets[i];
+                coinSelectMap.put(coinSets[i], numberOfCoins);
+                if (amount == 0) break;
+
+            }
+           
+            
+            System.out.println("Minimum Coin count = " +  coinSelectMap);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Please enter the interger");
         }
     }
 
-    private static Map<Integer, Integer> getCoins(int amount) {
-        Map<Integer, Integer> coinSelection = new LinkedHashMap<Integer, Integer>();
-        int rest = amount;
 
-        for (int coinValue : coinArray) {
-            int numberOfCoins = rest / coinValue;
-
-            if (numberOfCoins == 0) {
-                continue;
-            }
-            rest = rest % coinValue;
-            coinSelection.put(coinValue, numberOfCoins);
-
-            if (rest == 0) {
-                break;
-            }
-        }
-        return coinSelection;
-    }
 }
