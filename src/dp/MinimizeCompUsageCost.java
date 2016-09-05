@@ -16,16 +16,20 @@ import java.util.Map;
  * @author Kreshan
  */
 public class MinimizeCompUsageCost {
-    private static int computerValue = 100000;
+    
+    private static final int TOTAL_MAINTAIN_YEAR=5;
+    private static final int COMPUTER_VALUE = 100000;
+    
     private static int[] yearlyCost = new int[]{0,6000,8000,12000}; 
-    private static int[] valueAfterYear = new int[]{100000,80000,60000,50000};
+    private static int[] yearlyTrade = new int[]{100000,80000,60000,50000};
+    
     
     public static void main(String[] args) {
 
         Map<String, Integer> possibleSolutions = new LinkedHashMap<String, Integer>();
-        findCost(0, 1, 5, 0, new StringBuilder("buy at 0"), possibleSolutions);
-        findCost(0, 2, 5, 0, new StringBuilder("buy at 0"), possibleSolutions);
-        findCost(0, 3, 5, 0, new StringBuilder("buy at 0"), possibleSolutions);
+        MinimizeCompUsageCost.findCost(0, 1,  0, new StringBuilder("buy at 0"), possibleSolutions);
+        MinimizeCompUsageCost.findCost(0, 2,  0, new StringBuilder("buy at 0"), possibleSolutions);
+        MinimizeCompUsageCost.findCost(0, 3,  0, new StringBuilder("buy at 0"), possibleSolutions);
 
         int lowCost = Integer.MAX_VALUE;
 
@@ -50,26 +54,26 @@ public class MinimizeCompUsageCost {
 
     }
     
-    private static void findCost(int buyingYear, int sellingYear, int lastYear, int cost, StringBuilder path, Map<String, Integer> possibleSolutions){
+    private static void findCost(int buyingYear, int sellingYear,  int cost, StringBuilder path, Map<String, Integer> possibleSolutions){
         int operatingCost = findOperatingCost(buyingYear, sellingYear);
         int depreciationCost = findDepreciationCost(buyingYear, sellingYear);
 
 
         int costSoFar = cost + (operatingCost + depreciationCost);
 
-        if(sellingYear == lastYear){
+        if(sellingYear == TOTAL_MAINTAIN_YEAR){
             path.append("/sell at " + sellingYear);
             possibleSolutions.put(path.toString(), cost + operatingCost + depreciationCost);
             return ;
-        }  else if(sellingYear > lastYear){
+        }  else if(sellingYear > TOTAL_MAINTAIN_YEAR){
             return;
         }
 
         path.append("/sell and buy at "+ sellingYear);
 
-        findCost(sellingYear, sellingYear+1, lastYear, costSoFar, new StringBuilder(path.toString()), possibleSolutions);
-        findCost(sellingYear, sellingYear+2, lastYear, costSoFar, new StringBuilder(path.toString()), possibleSolutions);
-        findCost(sellingYear, sellingYear+3, lastYear, costSoFar, new StringBuilder(path.toString()), possibleSolutions);
+        findCost(sellingYear, sellingYear+1,  costSoFar, new StringBuilder(path.toString()), possibleSolutions);
+        findCost(sellingYear, sellingYear+2,  costSoFar, new StringBuilder(path.toString()), possibleSolutions);
+        findCost(sellingYear, sellingYear+3,  costSoFar, new StringBuilder(path.toString()), possibleSolutions);
 
     }
 
@@ -84,7 +88,7 @@ public class MinimizeCompUsageCost {
 
     private static int findDepreciationCost(int buyingYear, int sellingYear){
         int usage = sellingYear - buyingYear;
-        return computerValue - valueAfterYear[usage];
+        return COMPUTER_VALUE - yearlyTrade[usage];
     }
 
 }
