@@ -26,22 +26,22 @@ public class MinimizeCompUsageCost {
     
     public static void main(String[] args) {
 
-        Map<String, Integer> possibleSolutions = new LinkedHashMap<String, Integer>();
-        MinimizeCompUsageCost.findCost(0, 1,  0, new StringBuilder("buy at 0"), possibleSolutions);
-        MinimizeCompUsageCost.findCost(0, 2,  0, new StringBuilder("buy at 0"), possibleSolutions);
-        MinimizeCompUsageCost.findCost(0, 3,  0, new StringBuilder("buy at 0"), possibleSolutions);
+        Map<String, Integer> possibleCondition = new LinkedHashMap<String, Integer>();
+        MinimizeCompUsageCost.findCost(0, 1,  0, new StringBuilder("buy at 0"), possibleCondition);
+        MinimizeCompUsageCost.findCost(0, 2,  0, new StringBuilder("buy at 0"), possibleCondition);
+        MinimizeCompUsageCost.findCost(0, 3,  0, new StringBuilder("buy at 0"), possibleCondition);
 
         int lowCost = Integer.MAX_VALUE;
 
         List<String> lowCostPaths = new ArrayList<String>();
 
-        for (String path : possibleSolutions.keySet()) {
-            System.out.println("(" + path + ") ==> " + possibleSolutions.get(path));
-            if(lowCost > possibleSolutions.get(path)) {
-                lowCost = possibleSolutions.get(path);
+        for (String path : possibleCondition.keySet()) {
+            System.out.println("(" + path + ") ==> " + possibleCondition.get(path));
+            if(lowCost > possibleCondition.get(path)) {
+                lowCost = possibleCondition.get(path);
                 lowCostPaths.clear();
                 lowCostPaths.add(path);
-            } else if(lowCost == possibleSolutions.get(path)){
+            } else if(lowCost == possibleCondition.get(path)){
                 lowCostPaths.add(path);
             }
         }
@@ -62,14 +62,15 @@ public class MinimizeCompUsageCost {
         int costSoFar = cost + (operatingCost + depreciationCost);
 
         if(sellingYear == TOTAL_MAINTAIN_YEAR){
-            path.append("/sell at " + sellingYear);
+            path.append(" || sell at " + sellingYear);
             possibleSolutions.put(path.toString(), cost + operatingCost + depreciationCost);
             return ;
-        }  else if(sellingYear > TOTAL_MAINTAIN_YEAR){
+        }  
+        else if(sellingYear > TOTAL_MAINTAIN_YEAR){
             return;
         }
 
-        path.append("/sell and buy at "+ sellingYear);
+        path.append(" || sell and buy at "+ sellingYear);
 
         findCost(sellingYear, sellingYear+1,  costSoFar, new StringBuilder(path.toString()), possibleSolutions);
         findCost(sellingYear, sellingYear+2,  costSoFar, new StringBuilder(path.toString()), possibleSolutions);
