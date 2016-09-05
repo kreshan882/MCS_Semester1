@@ -1,11 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package dp;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -27,9 +20,10 @@ public class MinimizeCompUsageCost {
     public static void main(String[] args) {
 
         Map<String, Integer> possibleCondition = new LinkedHashMap<String, Integer>();
+                               //(buyYear,saleYear,Cost,path,map)         
         MinimizeCompUsageCost.findCost(0, 1,  0, new StringBuilder("buy at 0"), possibleCondition);
-        MinimizeCompUsageCost.findCost(0, 2,  0, new StringBuilder("buy at 0"), possibleCondition);
-        MinimizeCompUsageCost.findCost(0, 3,  0, new StringBuilder("buy at 0"), possibleCondition);
+//        MinimizeCompUsageCost.findCost(0, 2,  0, new StringBuilder("buy at 0"), possibleCondition);
+//        MinimizeCompUsageCost.findCost(0, 3,  0, new StringBuilder("buy at 0"), possibleCondition);
 
         int lowCost = Integer.MAX_VALUE;
 
@@ -55,15 +49,15 @@ public class MinimizeCompUsageCost {
     }
     
     private static void findCost(int buyingYear, int sellingYear,  int cost, StringBuilder path, Map<String, Integer> possibleSolutions){
-        int operatingCost = findOperatingCost(buyingYear, sellingYear);
-        int depreciationCost = findDepreciationCost(buyingYear, sellingYear);
+        int serviceCost = serviceCost(buyingYear, sellingYear);
+        int depreciationCost = COMPUTER_VALUE - yearlyTrade[sellingYear-buyingYear];
 
 
-        int costSoFar = cost + (operatingCost + depreciationCost);
+        int costSoFar = cost + (serviceCost + depreciationCost);
 
         if(sellingYear == TOTAL_MAINTAIN_YEAR){
             path.append(" || sell at " + sellingYear);
-            possibleSolutions.put(path.toString(), cost + operatingCost + depreciationCost);
+            possibleSolutions.put(path.toString(), cost + serviceCost + depreciationCost);
             return ;
         }  
         else if(sellingYear > TOTAL_MAINTAIN_YEAR){
@@ -78,7 +72,7 @@ public class MinimizeCompUsageCost {
 
     }
 
-    private static int findOperatingCost(int buyingYear, int sellingYear) {
+    private static int serviceCost(int buyingYear, int sellingYear) {
         int cost = 0;
         int usage = sellingYear - buyingYear;
         for(int i = 1; i <= usage; i++){
@@ -86,11 +80,5 @@ public class MinimizeCompUsageCost {
         }
         return cost;
     }
-
-    private static int findDepreciationCost(int buyingYear, int sellingYear){
-        int usage = sellingYear - buyingYear;
-        return COMPUTER_VALUE - yearlyTrade[usage];
-    }
-
 }
 
