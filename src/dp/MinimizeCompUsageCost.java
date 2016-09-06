@@ -1,8 +1,7 @@
 package dp;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  *
@@ -19,56 +18,47 @@ public class MinimizeCompUsageCost {
     
     public static void main(String[] args) {
 
-        Map<String, Integer> possibleCondition = new LinkedHashMap<String, Integer>();
-                               //(buyYear,saleYear,Cost,path,map)         
-        MinimizeCompUsageCost.findCost(0, 1,  0, new StringBuilder("buy at 0"), possibleCondition);
-//        MinimizeCompUsageCost.findCost(0, 2,  0, new StringBuilder("buy at 0"), possibleCondition);
-//        MinimizeCompUsageCost.findCost(0, 3,  0, new StringBuilder("buy at 0"), possibleCondition);
+        try{
+            Map<String, Integer> allPossibleCondition = new TreeMap<String, Integer>();
+            Map<String, Integer> lowCostPaths = new TreeMap<String, Integer>();
 
-        int lowCost = Integer.MAX_VALUE;
+            MinimizeCompUsageCost.findCost(0, 0,  0, "start year 0", allPossibleCondition);//(buyYear,saleYear,Cost,path,map) 
 
-        List<String> lowCostPaths = new ArrayList<String>();
+            MinimizeCompUsageCost.getLowPath(allPossibleCondition,lowCostPaths);
 
-        for (String path : possibleCondition.keySet()) {
-            System.out.println("(" + path + ") ==> " + possibleCondition.get(path));
-            if(lowCost > possibleCondition.get(path)) {
-                lowCost = possibleCondition.get(path);
-                lowCostPaths.clear();
-                lowCostPaths.add(path);
-            } else if(lowCost == possibleCondition.get(path)){
-                lowCostPaths.add(path);
+            System.out.println("Low Cost maintain Paths => value");
+            for (String path : lowCostPaths.keySet()) {
+                System.out.println( path + " ==> " + lowCostPaths.get(path));
             }
+            
+        }catch(Exception e){
+            e.printStackTrace();
         }
-
-        System.out.println("\nLow Cost Paths are ");
-        for (String lowCostPath : lowCostPaths) {
-            System.out.println(lowCostPath);
-        }
-        System.out.println("Low Cost Value " + lowCost);
 
     }
     
-    private static void findCost(int buyingYear, int sellingYear,  int cost, StringBuilder path, Map<String, Integer> possibleSolutions){
+    private static void findCost(int buyingYear, int sellingYear,  int cost, String path, Map<String, Integer> possibleCondition){
+        
         int serviceCost = serviceCost(buyingYear, sellingYear);
-        int depreciationCost = COMPUTER_VALUE - yearlyTrade[sellingYear-buyingYear];
-
-
-        int costSoFar = cost + (serviceCost + depreciationCost);
-
+        int redusedValue = COMPUTER_VALUE - yearlyTrade[sellingYear-buyingYear];
+        int costTotal = cost+ serviceCost + redusedValue;
+        
         if(sellingYear == TOTAL_MAINTAIN_YEAR){
-            path.append(" || sell at " + sellingYear);
-            possibleSolutions.put(path.toString(), cost + serviceCost + depreciationCost);
+            path=path+" || sale year "+sellingYear;
+            possibleCondition.put(path, costTotal );
             return ;
         }  
         else if(sellingYear > TOTAL_MAINTAIN_YEAR){
             return;
         }
 
-        path.append(" || sell and buy at "+ sellingYear);
+        if(sellingYear !=0) {
+            path=path+" || sell and buy at "+sellingYear;
+        }
 
-        findCost(sellingYear, sellingYear+1,  costSoFar, new StringBuilder(path.toString()), possibleSolutions);
-        findCost(sellingYear, sellingYear+2,  costSoFar, new StringBuilder(path.toString()), possibleSolutions);
-        findCost(sellingYear, sellingYear+3,  costSoFar, new StringBuilder(path.toString()), possibleSolutions);
+        findCost(sellingYear, sellingYear+1,  costTotal, path, possibleCondition);
+        findCost(sellingYear, sellingYear+2,  costTotal, path, possibleCondition);
+        findCost(sellingYear, sellingYear+3,  costTotal, path, possibleCondition);
 
     }
 
@@ -80,5 +70,23 @@ public class MinimizeCompUsageCost {
         }
         return cost;
     }
+
+    private static void getLowPath(Map<String, Integer> possibleCondition, Map<String, Integer> lowCostPaths) throws Exception{
+         System.out.println("All Paths:");
+         int lowCost = Integer.MAX_VALUE;
+        for (String path : possibleCondition.keySet()) {
+            System.out.println( path + " ==> " + possibleCondition.get(path));
+            
+            if(lowCost > possibleCondition.get(path)) {
+                lowCost = possibleCondition.get(path);
+                lowCostPaths.clear();
+                lowCostPaths.put(path,possibleCondition.get(path));
+            } else if(lowCost == possibleCondition.get(path)){
+                lowCostPaths.put(path,possibleCondition.get(path));
+            }
+        }
+    }
+    
+
 }
 
